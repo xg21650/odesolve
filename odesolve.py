@@ -11,6 +11,9 @@
 # Define parameters
 
 import numpy as np
+import matplotlib.pyplot as plt
+
+f = 0
 
 
 def euler(f, x, t, h):
@@ -33,27 +36,66 @@ def rk4(f, x, t, h):
     pass
 
 
-def solveto(f, x1, t1, t2, hmax, method=euler):
+def solveto(f, x0, t0, t1, hmax, method=euler):
     def f(x, t):
         return x
 
-    p = (t2 - t1) / hmax
-    for i in np.arange(p):
-        t = t1 + i
-        print(t)
+    t = 0
+    t1 += hmax
+    for i in np.arange(t0, t1, hmax):
+        t += i
         if method == euler:
-            temp = euler(f, x1, t, hmax)
-            print(temp)
+            # don't know what to do here
+            pass
         else:
-            temp = rk4(f, x1, t, hmax)
-
-    return temp
+            # don't know what to do here
+            pass
+    return x1
     pass
+
+
+def f(X, t):
+    x, y = X
+    dxdt = y
+    dydt = -x
+    return np.array([dxdtm, dydt])
 
 
 def odesolve(f, X0, t, hmax, method=euler):
-    """Compute the solution at different values of t"""
+    def f(X, t):
+        x, y = X
+        dxdt = y
+        dydt = -x
+        return np.array([dxdt, dydt])
+
+    X0 = np.array([dxdt, dydt])
+    h =
+    t = np.linspace(0, 10, 100)
+
+    Xt = odesolve(f, X0, t, h)
+
+    plt.plot(t, Xt.T)
+    plt.savefig('shm.pdf')
+    plt.show()
+
     pass
 
+
+def error:
+    t0 = 0
+    t1 = 1
+    x0 = 0
+    hmax = 0.01
+
+    errorEuler = e - solveto(f, x0.t0, t1, hmax)
+    errorRK4 = e - solveto(f, x0.t0, t1, hmax, rk4)
+    if errorEuler < 0:
+        errorEuler = -errorEuler
+        pass
+    elif errorRK4 < 0:
+        errorRK4 = -errorRK4
+        pass
+    else:
+        pass
 
 
