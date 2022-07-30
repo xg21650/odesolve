@@ -36,35 +36,28 @@ def rk4(f, x, t, h):
     pass
 
 
-def solveto(f, x1, t1, t2, hmax, method=euler):
+def solveto(f, x0, t0, t1, hmax, method=euler):
     def f(x, t):
         return x
 
     h = hmax
-    ta = t1 + hmax
-    tb = t2 + hmax
+    ta = t0 + hmax
+    tb = t1 + hmax
     for i in np.arange(ta, tb, hmax):
         if method == euler:
-            if i > t2:
-                h = t2 - i + h
-            x1 = euler(f, x1, t1, h)
+            if i > t1:
+                h = t1 - i + h
+            x0 = euler(f, x0, t0, h)
             pass
 
         else:
-            if i > t2:
-                h = t2 - i + h
-            x1 = rk4(f, x1, t1, hmax)
+            if i > t1:
+                h = t1 - i + h
+            x0 = rk4(f, x0, t0, hmax)
             pass
 
-    return x1
+    return x0
     pass
-
-
-def f(X, t):
-    x, y = X
-    dxdt = y
-    dydt = -x
-    return np.array([dxdtm, dydt])
 
 
 def odesolve(f, X0, t, hmax, method=euler):
@@ -74,11 +67,15 @@ def odesolve(f, X0, t, hmax, method=euler):
         dydt = -x
         return np.array([dxdt, dydt])
 
-    X0 = np.array([dxdt, dydt])
-    h = 0.01
-    t = np.linspace(0, 10, 100)
+    x0 = 1
+    y0 = 0
 
-    Xt = odesolve(f, X0, t, h)
+    X0 = np.array([x0, y0])
+    t = np.linspace(0, 10, 100)
+    for i in range(t):
+        X1 = solveto(f, X0, t, hmax)
+        print(X1)
+        Xt = odesolve(f, X0, t, hmax)
 
     plt.plot(t, Xt.T)
     plt.savefig('shm.pdf')
@@ -93,8 +90,8 @@ def error(mode):
     x0 = 0
     hmax = 0.01
 
-    errorEuler = e - solveto(f, x1, t1, t2, hmax)
-    errorRK4 = e - solveto(f, x1, t1, t2, hmax, rk4)
+    errorEuler = e - solveto(f, x0, t0, t1, hmax)
+    errorRK4 = e - solveto(f, x0, t0, t1, hmax, rk4)
     if errorEuler < 0:
         errorEuler = -errorEuler
         pass
@@ -103,4 +100,6 @@ def error(mode):
         pass
     else:
         pass
+
+
 
