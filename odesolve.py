@@ -72,10 +72,8 @@ def odesolve(f, X0, t, hmax, method=euler):
 
     X0 = np.array([x0, y0])
     t = np.linspace(0, 10, 100)
-    for i in range(t):
-        X1 = solveto(f, X0, t, hmax)
-        print(X1)
-        Xt = odesolve(f, X0, t, hmax)
+
+    Xt = odesolve(f, X0, t, h)
 
     plt.plot(t, Xt.T)
     plt.savefig('shm.pdf')
@@ -84,11 +82,12 @@ def odesolve(f, X0, t, hmax, method=euler):
     pass
 
 
-def error(mode):
+def error(f, x0, t0, t1):
+    x0 = 1
     t0 = 0
     t1 = 1
-    x0 = 0
-    hmax = 0.01
+
+    e = 2.718281828459045
 
     errorEuler = e - solveto(f, x0, t0, t1, hmax)
     errorRK4 = e - solveto(f, x0, t0, t1, hmax, rk4)
@@ -100,6 +99,9 @@ def error(mode):
         pass
     else:
         pass
+    plt.plot(errorEuler, color='blue')
+    plt.plot(errorRK4, color='orange')
 
+    plt.show
 
 
