@@ -16,17 +16,11 @@ f = 0
 
 
 def euler(f, x, t, h):
-    def f(x, t):
-        return x + t
-
     return x + f(x, t) * h
     pass
 
 
 def rk4(f, x, t, h):
-    def f(x, t):
-        return x
-
     k1 = f(x, t)
     k2 = f(x + k1 * h / 2, t + h / 2)
     k3 = f(x + k2 * h / 2, t + h / 2)
@@ -36,25 +30,20 @@ def rk4(f, x, t, h):
 
 
 def solveto(f, x0, t0, t1, hmax, method=euler):
-    def f(x, t):
-        return x
 
     h = hmax
-    ta = t0 + hmax
-    tb = t1 + hmax
-    for i in np.arange(ta, tb, hmax):
+    for i in np.arange(t0, t1, hmax):
         if method == euler:
-            if i > t1:
-                h = t1 - i + h
-            x0 = euler(f, x0, t0, h)
+            if i > t1 - hmax:
+                h = t1 - i
+            x0 = euler(f, x0, i, h)
             pass
 
         else:
-            if i > t1:
-                h = t1 - i + h
-            x0 = rk4(f, x0, t0, hmax)
+            if i > t1 - hmax:
+                h = t1 - i
+            x0 = rk4(f, x0, i, h)
             pass
-
     return x0
     pass
 
@@ -106,4 +95,3 @@ def error(f, x0, t0, t1):
     pass
 
 
-solveto(f, 1, 0, 1, 0.1)
