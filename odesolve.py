@@ -30,7 +30,6 @@ def rk4(f, x, t, h):
 
 
 def solveto(f, x0, t0, t1, hmax, method=euler):
-
     h = hmax
     for i in np.arange(t0, t1, hmax):
         if method == euler:
@@ -50,17 +49,18 @@ def solveto(f, x0, t0, t1, hmax, method=euler):
 
 def odesolve(f, x0, tvals, hmax, method=euler):
     X0 = np.array([x0])
-    tvals = np.linspace(0, 1, 5)
-    for i in range(0, len(tvals) - 1):
+
+    for i in range(len(tvals) - 1):
         if method == euler:
-            Xt = solveto(f, x0, tvals[i], tvals[i + 1], hmax)
-            print(Xt)
+            Xt = solveto(f, x0[0], tvals[0], tvals[i + 1], hmax)
+            X0 = np.append(X0, [Xt])
         else:
-            Xt = solveto(f, X0, tvals[i], tvals[i + 1], hmax, rk4)
-        X0 = np.append(X0, [Xt])
+            Xt = solveto(f, x0[0], tvals[0], tvals[i + 1], hmax, rk4)
+            X0 = np.append(X0, [Xt])
+    return X0
 
     plt.plot(tvals, X0.T)
-    # plt.savefig('shm.pdf')
+    plt.savefig('shm.pdf')
     plt.show()
     pass
 
@@ -93,5 +93,6 @@ def error(f, x0, t0, t1):
     plt.plot(errorEuler, color='blue')
     plt.plot(errorRK4, color='orange')
     pass
+
 
 
