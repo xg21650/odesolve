@@ -53,9 +53,6 @@ def odesolve(f, x0, tvals, hmax, method=euler):
         else:
             Xt = solveto(f, x0[0], tvals[0], tvals[i + 1], hmax, rk4)
             X0 = np.append(X0, [Xt])
-    plt.plot(tvals, X0.T)
-    plt.savefig('shm.pdf')
-    plt.show()
     pass
     return X0  # returns the completed array
 
